@@ -1,47 +1,57 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/animation.dart';
 import 'package:get/get.dart';
-import 'package:puskesmas/app/routes/app_pages.dart';
 
-
-class SplashController extends GetxController {
-  late PageController pageController;
-  var currentPage = 0.obs;
+class SplashController extends GetxController
+    with GetSingleTickerProviderStateMixin {
+  late AnimationController animationController;
+  late Animation<double> fadeAnimation;
+  late Animation<Offset> slideAnimation;
+  late Animation<double> scaleAnimation;
 
   @override
   void onInit() {
-    pageController = PageController();
     super.onInit();
-  }
 
-  void onPageChanged(int index) {
-    currentPage.value = index;
-  }
-
-  void skip() {
-    Get.offNamed(Routes.LOGIN);
-  }
-
-  void nextPage() {
-    pageController.nextPage(
-      duration: const Duration(milliseconds: 300),
-      curve: Curves.easeInOut,
+    // Initialize animation controller
+    animationController = AnimationController(
+      duration: const Duration(seconds: 2),
+      vsync: this,
     );
-  }
 
-  void previousPage() {
-    pageController.previousPage(
-      duration: const Duration(milliseconds: 300),
-      curve: Curves.easeInOut,
-    );
-  }
+    // Fade animation for text
+    fadeAnimation = Tween<double>(
+      begin: 0.0,
+      end: 1.0,
+    ).animate(CurvedAnimation(
+      parent: animationController,
+      curve: const Interval(0.0, 0.5, curve: Curves.easeIn),
+    ));
 
-  void enterApp() {
-    Get.offNamed(Routes.LOGIN);
+    // Slide animation for image
+    slideAnimation = Tween<Offset>(
+      begin: const Offset(0, 0.5),
+      end: Offset.zero,
+    ).animate(CurvedAnimation(
+      parent: animationController,
+      curve: const Interval(0.3, 0.8, curve: Curves.easeOut),
+    ));
+
+    // Scale animation for button
+    scaleAnimation = Tween<double>(
+      begin: 0.0,
+      end: 1.0,
+    ).animate(CurvedAnimation(
+      parent: animationController,
+      curve: const Interval(0.6, 1.0, curve: Curves.elasticOut),
+    ));
+
+    // Start the animation
+    animationController.forward();
   }
 
   @override
   void onClose() {
-    pageController.dispose();
+    animationController.dispose();
     super.onClose();
   }
 }

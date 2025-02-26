@@ -55,6 +55,7 @@ class _InputTextFormFieldState extends State<InputTextFormField> {
       onFieldSubmitted: widget.onFieldSubmitted,
       decoration: InputDecoration(
         filled: true,
+        fillColor: Colors.white,
         hintText: widget.hint,
         hintStyle: TextStyle(
           fontSize: widget.hintTextSize,

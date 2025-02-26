@@ -49,6 +49,22 @@ class LoginView extends GetView<LoginController> {
               hint: 'Password',
             ),
           ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                Text(
+                  'Lupa Password?',
+                  style: TextStyle(
+                    fontSize: 12.sp,
+                    fontFamily: 'Medium',
+                    color: Colors.red,
+                  ),
+                )
+              ],
+            ),
+          ),
           SizedBox(
             height: 26.sp,
           ),
@@ -57,7 +73,7 @@ class LoginView extends GetView<LoginController> {
             child: InputFormButton(
               titleText: 'Login',
               onClick: () {
-                Get.toNamed(Routes.HOME);
+                Get.toNamed(Routes.BASE);
               },
             ),
           ),
@@ -68,7 +84,7 @@ class LoginView extends GetView<LoginController> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
-                'Belum Punya akun?',
+                'Belum Punya akun? ',
                 style: TextStyle(
                   fontSize: 12.sp,
                 ),

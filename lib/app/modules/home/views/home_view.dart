@@ -11,17 +11,17 @@ class HomeView extends GetView<HomeController> {
 
   @override
   Widget build(BuildContext context) {
-    final h = MediaQuery.of(context).size.height;
     return Scaffold(
-      body: Padding(
-        padding: EdgeInsets.symmetric(
-          vertical: ScreenUtil.defaultSize.height * .1,
-        ),
+      body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Padding(
-              padding: EdgeInsets.symmetric(horizontal: 16.0.sp),
+              padding: EdgeInsets.only(
+                left: 16.0.sp,
+                right: 16.sp,
+                top: ScreenUtil().statusBarHeight,
+              ),
               child: Row(
                 children: [
                   CircleAvatar(
@@ -44,7 +44,7 @@ class HomeView extends GetView<HomeController> {
                         ),
                       ),
                       Text(
-                        'Fremas adi',
+                        'Hi,Muti Santoso',
                         style: TextStyle(
                           fontSize: 12.sp,
                         ),
@@ -63,77 +63,89 @@ class HomeView extends GetView<HomeController> {
             _buildSearchBar(),
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 16.0.sp),
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(16.sp),
-                child: Image.asset(
-                  'assets/images/img_slidder.jpg',
-                  height: 180.h,
-                  width: MediaQuery.of(context).size.width,
-                  fit: BoxFit.cover,
+              child: Text(
+                'Daftar Dokter',
+                style: TextStyle(
+                  fontSize: 18.sp,
+                  fontFamily: 'SemiBold',
                 ),
               ),
             ),
-            Padding(
-              padding: EdgeInsets.all(16.0.sp),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    'Kategory',
-                    style: TextStyle(
-                      fontSize: 18.sp,
-                      fontFamily: 'SemiBold',
-                    ),
-                  ),
-                  Text(
-                    'Lihat Semua',
-                    style: TextStyle(
-                      fontSize: 12.sp,
-                      color: AppColor.grey,
-                    ),
-                  )
-                ],
-              ),
-            ),
-            _categoryCard(),
-            Padding(
-              padding: EdgeInsets.all(16.0.sp),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    'Kategory',
-                    style: TextStyle(
-                      fontSize: 18.sp,
-                      fontFamily: 'SemiBold',
-                    ),
-                  ),
-                  Text(
-                    'Lihat Semua',
-                    style: TextStyle(
-                      fontSize: 12.sp,
-                      color: AppColor.grey,
-                    ),
-                  )
-                ],
-              ),
-            ),
-            Container(
-              padding: EdgeInsets.all(16.sp),
-              decoration: BoxDecoration(
-                color: AppColor.primary.withOpacity(0.5),
-              ),
-              child: Row(
-                children: [],
-              ),
-            )
+            widgetDoctor(),
+            widgetDoctor(),
+            widgetDoctor(),
+            widgetDoctor(),
+            widgetDoctor(),
           ],
         ),
       ),
     );
   }
 
-  Widget _buildSearchBar() {
+  Container widgetDoctor() {
+    return Container(
+      margin: EdgeInsets.symmetric(horizontal: 16.sp, vertical: 8.sp),
+      decoration: BoxDecoration(
+        color: AppColor.white,
+        borderRadius: BorderRadius.circular(12.sp),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.1),
+            spreadRadius: 2,
+            blurRadius: 6,
+            offset: const Offset(0, 3), // changes position of shadow
+          ),
+        ],
+      ),
+      child: Padding(
+        padding: EdgeInsets.all(16.sp),
+        child: Row(
+          children: [
+            Container(
+              height: 80.h,
+              width: 80.w,
+              decoration: BoxDecoration(
+                color: Colors.grey[200],
+                borderRadius: BorderRadius.circular(12.sp),
+              ),
+              child: const Center(
+                child: Icon(
+                  Icons.person,
+                  color: Colors.grey,
+                  size: 40,
+                ),
+              ),
+            ),
+            SizedBox(width: 16.sp),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Dr. Muti',
+                    style: TextStyle(
+                      fontSize: 16.sp,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  SizedBox(height: 8.sp),
+                  Text(
+                    'Poli Umum',
+                    style: TextStyle(
+                      fontSize: 14.sp,
+                      color: Colors.grey,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Container _buildSearchBar() {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 12.sp, vertical: 8.sp),
       margin: EdgeInsets.symmetric(vertical: 24.sp, horizontal: 16.sp),
@@ -148,38 +160,13 @@ class HomeView extends GetView<HomeController> {
           Expanded(
             child: TextFormField(
               decoration: InputDecoration(
-                hintText: 'Search',
+                hintText: 'Cari Dokter',
                 hintStyle: TextStyle(fontSize: 12.sp, color: Colors.grey),
                 border: InputBorder.none,
               ),
             ),
           ),
-          Icon(Icons.list, color: Colors.grey, size: 22.sp),
-        ],
-      ),
-    );
-  }
-}
-
-class _categoryCard extends StatelessWidget {
-  const _categoryCard({
-    super.key,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.only(left: 16.0.sp),
-      child: Column(
-        children: [
-          CircleAvatar(
-            radius: 25.r,
-            backgroundImage: AssetImage('assets/images/img_slidder.jpg'),
-          ),
-          Text(
-            'Dokter gigi',
-            style: TextStyle(fontSize: 12.sp),
-          )
+          Icon(Icons.menu, color: Colors.grey, size: 22.sp),
         ],
       ),
     );
