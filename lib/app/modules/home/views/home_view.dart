@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-
 import 'package:get/get.dart';
+import 'package:puskesmas/app/routes/app_pages.dart';
 import 'package:puskesmas/app/style/app_color.dart';
-
 import '../controllers/home_controller.dart';
 
 class HomeView extends GetView<HomeController> {
@@ -11,6 +10,13 @@ class HomeView extends GetView<HomeController> {
 
   @override
   Widget build(BuildContext context) {
+    List<Map<String, dynamic>> poliList = [
+      {'name': 'Poli Gigi & Mulut', 'icon': Icons.medical_services},
+      {'name': 'Poli Umum', 'icon': Icons.local_hospital},
+      {'name': 'Poli Lansia', 'icon': Icons.child_care},
+      {'name': 'Poli Kb & Imunisas', 'icon': Icons.visibility},
+    ];
+
     return Scaffold(
       body: SingleChildScrollView(
         child: Column(
@@ -30,9 +36,7 @@ class HomeView extends GetView<HomeController> {
                       'assets/images/img_profile.jpg',
                     ),
                   ),
-                  SizedBox(
-                    width: 12.w,
-                  ),
+                  SizedBox(width: 12.w),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -44,7 +48,7 @@ class HomeView extends GetView<HomeController> {
                         ),
                       ),
                       Text(
-                        'Hi,Muti Santoso',
+                        'Hi, Muti Santoso',
                         style: TextStyle(
                           fontSize: 12.sp,
                         ),
@@ -60,114 +64,66 @@ class HomeView extends GetView<HomeController> {
                 ],
               ),
             ),
-            _buildSearchBar(),
             Padding(
-              padding: EdgeInsets.symmetric(horizontal: 16.0.sp),
+              padding: EdgeInsets.all(16.0.sp),
               child: Text(
-                'Daftar Dokter',
+                'Silakan Pilih Poli',
                 style: TextStyle(
-                  fontSize: 18.sp,
+                  fontSize: 16.sp,
                   fontFamily: 'SemiBold',
                 ),
               ),
             ),
-            widgetDoctor(),
-            widgetDoctor(),
-            widgetDoctor(),
-            widgetDoctor(),
-            widgetDoctor(),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Container widgetDoctor() {
-    return Container(
-      margin: EdgeInsets.symmetric(horizontal: 16.sp, vertical: 8.sp),
-      decoration: BoxDecoration(
-        color: AppColor.white,
-        borderRadius: BorderRadius.circular(12.sp),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.1),
-            spreadRadius: 2,
-            blurRadius: 6,
-            offset: const Offset(0, 3), // changes position of shadow
-          ),
-        ],
-      ),
-      child: Padding(
-        padding: EdgeInsets.all(16.sp),
-        child: Row(
-          children: [
-            Container(
-              height: 80.h,
-              width: 80.w,
-              decoration: BoxDecoration(
-                color: Colors.grey[200],
-                borderRadius: BorderRadius.circular(12.sp),
-              ),
-              child: const Center(
-                child: Icon(
-                  Icons.person,
-                  color: Colors.grey,
-                  size: 40,
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 16.sp),
+              child: GridView.builder(
+                padding: EdgeInsets.zero,
+                shrinkWrap: true,
+                physics: NeverScrollableScrollPhysics(),
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 2,
+                  crossAxisSpacing: 12.w,
+                  mainAxisSpacing: 12.h,
+                  childAspectRatio: 1,
                 ),
-              ),
-            ),
-            SizedBox(width: 16.sp),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'Dr. Muti',
-                    style: TextStyle(
-                      fontSize: 16.sp,
-                      fontWeight: FontWeight.bold,
+                itemCount: poliList.length,
+                itemBuilder: (context, index) {
+                  return Card(
+                    color: AppColor.white,
+                    elevation: 1,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12.r),
                     ),
-                  ),
-                  SizedBox(height: 8.sp),
-                  Text(
-                    'Poli Umum',
-                    style: TextStyle(
-                      fontSize: 14.sp,
-                      color: Colors.grey,
+                    child: InkWell(
+                      onTap: () {
+                        Get.toNamed(Routes.DOCTOR,
+                            arguments: poliList[index]['name']);
+                      },
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(
+                            poliList[index]['icon'],
+                            size: 50.sp,
+                            color: AppColor.primary,
+                          ),
+                          SizedBox(height: 8.h),
+                          Text(
+                            poliList[index]['name'],
+                            style: TextStyle(
+                              fontSize: 14.sp,
+                              fontFamily: 'Medium',
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
-                ],
+                  );
+                },
               ),
             ),
           ],
         ),
-      ),
-    );
-  }
-
-  Container _buildSearchBar() {
-    return Container(
-      padding: EdgeInsets.symmetric(horizontal: 12.sp, vertical: 8.sp),
-      margin: EdgeInsets.symmetric(vertical: 24.sp, horizontal: 16.sp),
-      decoration: BoxDecoration(
-        color: Color(0xffD9D9D9),
-        borderRadius: BorderRadius.circular(16.sp),
-      ),
-      child: Row(
-        children: [
-          Icon(Icons.search, size: 28.sp, color: AppColor.black),
-          SizedBox(width: 12.w),
-          Expanded(
-            child: TextFormField(
-              decoration: InputDecoration(
-                hintText: 'Cari Dokter',
-                hintStyle: TextStyle(fontSize: 12.sp, color: Colors.grey),
-                border: InputBorder.none,
-              ),
-            ),
-          ),
-          Icon(Icons.menu, color: Colors.grey, size: 22.sp),
-        ],
       ),
     );
   }

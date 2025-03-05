@@ -2,6 +2,8 @@ import 'package:get/get.dart';
 
 import '../modules/base/bindings/base_binding.dart';
 import '../modules/base/views/base_view.dart';
+import '../modules/doctor/bindings/doctor_binding.dart';
+import '../modules/doctor/views/doctor_view.dart';
 import '../modules/history/bindings/history_binding.dart';
 import '../modules/history/views/history_view.dart';
 import '../modules/home/bindings/home_binding.dart';
@@ -50,6 +52,11 @@ class AppPages {
       name: _Paths.PROFILE,
       page: () => const ProfileView(),
       binding: ProfileBinding(),
+    ),
+    GetPage(
+      name: _Paths.DOCTOR,
+      page: () => const DoctorView(),
+      binding: DoctorBinding(),
     ),
   ];
 }
