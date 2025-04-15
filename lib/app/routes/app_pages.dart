@@ -1,9 +1,9 @@
 import 'package:get/get.dart';
+import 'package:puskesmas/app/modules/register/bindings/register_binding.dart';
+import 'package:puskesmas/app/modules/register/views/register_view.dart';
 
 import '../modules/base/bindings/base_binding.dart';
 import '../modules/base/views/base_view.dart';
-import '../modules/doctor/bindings/doctor_binding.dart';
-import '../modules/doctor/views/doctor_view.dart';
 import '../modules/history/bindings/history_binding.dart';
 import '../modules/history/views/history_view.dart';
 import '../modules/home/bindings/home_binding.dart';
@@ -54,9 +54,9 @@ class AppPages {
       binding: ProfileBinding(),
     ),
     GetPage(
-      name: _Paths.DOCTOR,
-      page: () => const DoctorView(),
-      binding: DoctorBinding(),
+      name: _Paths.REGISTER,
+      page: () => const RegisterView(),
+      binding: RegisterBinding(),
     ),
   ];
 }

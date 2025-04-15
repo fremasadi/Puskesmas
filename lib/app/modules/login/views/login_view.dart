@@ -38,7 +38,7 @@ class LoginView extends GetView<LoginController> {
             padding: EdgeInsets.symmetric(horizontal: 16.0),
             child: InputTextFormField(
               controller: controller.emailController,
-              hint: 'Nomer Bpjs',
+              hint: 'Email',
             ),
           ),
           Padding(
@@ -49,24 +49,24 @@ class LoginView extends GetView<LoginController> {
               hint: 'Password',
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                Text(
-                  'Lupa Password?',
-                  style: TextStyle(
-                    fontSize: 12.sp,
-                    fontFamily: 'Medium',
-                    color: Colors.red,
-                  ),
-                )
-              ],
-            ),
-          ),
+          // Padding(
+          //   padding: const EdgeInsets.symmetric(horizontal: 16.0),
+          //   child: Row(
+          //     mainAxisAlignment: MainAxisAlignment.end,
+          //     children: [
+          //       Text(
+          //         'Lupa Password?',
+          //         style: TextStyle(
+          //           fontSize: 12.sp,
+          //           fontFamily: 'Medium',
+          //           color: Colors.red,
+          //         ),
+          //       )
+          //     ],
+          //   ),
+          // ),
           SizedBox(
-            height: 26.sp,
+            height: 12.sp,
           ),
           Padding(
             padding: EdgeInsets.symmetric(horizontal: 16.0.sp),
@@ -78,7 +78,7 @@ class LoginView extends GetView<LoginController> {
             ),
           ),
           SizedBox(
-            height: 32.sp,
+            height: 12.sp,
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -89,12 +89,17 @@ class LoginView extends GetView<LoginController> {
                   fontSize: 12.sp,
                 ),
               ),
-              Text(
-                'Daftar',
-                style: TextStyle(
-                    fontSize: 12.sp,
-                    fontFamily: 'SemiBold',
-                    color: AppColor.primary),
+              GestureDetector(
+                onTap: () {
+                  Get.toNamed(Routes.REGISTER);
+                },
+                child: Text(
+                  'Daftar',
+                  style: TextStyle(
+                      fontSize: 12.sp,
+                      fontFamily: 'SemiBold',
+                      color: AppColor.primary),
+                ),
               )
             ],
           )

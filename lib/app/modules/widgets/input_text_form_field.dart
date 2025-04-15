@@ -11,6 +11,10 @@ class InputTextFormField extends StatefulWidget {
   final bool enable;
   final TextInputAction? textInputAction;
   final Function(String)? onFieldSubmitted;
+  final int? maxLines;
+  final TextInputType? keyboardType;
+  final bool isDateField;
+  final String? Function(String?)? validator;
 
   const InputTextFormField({
     super.key,
@@ -24,6 +28,10 @@ class InputTextFormField extends StatefulWidget {
     this.textInputAction,
     this.hintTextSize = 14,
     this.onFieldSubmitted,
+    this.maxLines = 1,
+    this.keyboardType,
+    this.isDateField = false,
+    this.validator,
   });
 
   @override
@@ -40,6 +48,18 @@ class _InputTextFormFieldState extends State<InputTextFormField> {
     });
   }
 
+  Future<void> _selectDate(BuildContext context) async {
+    final DateTime? picked = await showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime(1900),
+      lastDate: DateTime.now(),
+    );
+    if (picked != null) {
+      widget.controller.text = "${picked.toLocal()}".split(' ')[0];
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return TextFormField(
@@ -47,12 +67,26 @@ class _InputTextFormFieldState extends State<InputTextFormField> {
       obscureText: widget.isSecureField && !_passwordVisible,
       enableSuggestions: !widget.isSecureField,
       autocorrect: widget.autoCorrect,
-      validator: widget.validation ?? (_) => null,
-      // Default null validation
       autovalidateMode: AutovalidateMode.onUserInteraction,
       enabled: widget.enable,
       textInputAction: widget.textInputAction,
       onFieldSubmitted: widget.onFieldSubmitted,
+      maxLines: widget.maxLines,
+      keyboardType: widget.keyboardType,
+      readOnly: widget.isDateField,
+      onTap: widget.isDateField
+          ? () {
+              FocusScope.of(context).requestFocus(FocusNode());
+              _selectDate(context);
+            }
+          : null,
+      validator: widget.validator ??
+          (value) {
+            if (value == null || value.isEmpty) {
+              return 'Form ini wajib diisi';
+            }
+            return null;
+          },
       decoration: InputDecoration(
         filled: true,
         fillColor: Colors.white,
@@ -61,7 +95,6 @@ class _InputTextFormFieldState extends State<InputTextFormField> {
           fontSize: widget.hintTextSize,
         ),
         contentPadding: widget.contentPadding ?? const EdgeInsets.all(16.0),
-        // Default padding
         suffixIcon: widget.isSecureField
             ? IconButton(
                 icon: Icon(
@@ -70,7 +103,9 @@ class _InputTextFormFieldState extends State<InputTextFormField> {
                 ),
                 onPressed: _togglePasswordVisibility,
               )
-            : null,
+            : widget.isDateField
+                ? const Icon(Icons.calendar_today, color: Colors.black87)
+                : null,
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12.0),
           borderSide: const BorderSide(
