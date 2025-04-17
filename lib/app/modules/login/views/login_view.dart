@@ -45,7 +45,7 @@ class LoginView extends GetView<LoginController> {
             padding: EdgeInsets.all(16.0),
             child: InputTextFormField(
               isSecureField: true,
-              controller: controller.emailController,
+              controller: controller.passwordController,
               hint: 'Password',
             ),
           ),
@@ -68,15 +68,37 @@ class LoginView extends GetView<LoginController> {
           SizedBox(
             height: 12.sp,
           ),
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: 16.0.sp),
-            child: InputFormButton(
-              titleText: 'Login',
-              onClick: () {
-                Get.toNamed(Routes.BASE);
-              },
-            ),
-          ),
+          Obx(() {
+            return Center(
+              child: ElevatedButton(
+                onPressed: controller.isLoading.value ? null : controller.login,
+                style: ElevatedButton.styleFrom(
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 12, horizontal: 48),
+                  backgroundColor: AppColor.primary,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                ),
+                child: controller.isLoading.value
+                    ? const SizedBox(
+                        width: 20,
+                        height: 20,
+                        child: CircularProgressIndicator(
+                          color: Colors.white,
+                          strokeWidth: 2,
+                        ),
+                      )
+                    : Text(
+                        'Login',
+                        style: TextStyle(
+                            fontSize: 14.sp,
+                            color: Colors.white,
+                            fontFamily: 'SemiBold'),
+                      ),
+              ),
+            );
+          }),
           SizedBox(
             height: 12.sp,
           ),

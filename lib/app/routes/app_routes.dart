@@ -12,6 +12,8 @@ abstract class Routes {
   static const PROFILE = _Paths.PROFILE;
   static const REGISTER = _Paths.REGISTER;
   static const DOCTOR = _Paths.DOCTOR;
+  static const check = _Paths.check;
+  static const QUEUE = _Paths.QUEUE;
 }
 
 abstract class _Paths {
@@ -25,4 +27,6 @@ abstract class _Paths {
   static const PROFILE = '/profile';
   static const REGISTER = '/register';
   static const DOCTOR = '/doctor';
+  static const check = '/check';
+  static const QUEUE = '/queue';
 }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:get/get_connect/http/src/utils/utils.dart';
 import 'package:puskesmas/app/routes/app_pages.dart';
 import 'package:puskesmas/app/style/app_color.dart';
 import '../controllers/home_controller.dart';
@@ -18,6 +19,24 @@ class HomeView extends GetView<HomeController> {
     ];
 
     return Scaffold(
+      floatingActionButton: GestureDetector(
+        onTap: () => Get.toNamed(Routes.QUEUE),
+        child: Container(
+          padding: EdgeInsets.symmetric(vertical: 12.sp, horizontal: 16.sp),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(12.r),
+            color: AppColor.primary,
+          ),
+          child: Text(
+            'Tambah Antrian',
+            style: TextStyle(
+              fontSize: 12.sp,
+              fontFamily: 'SemiBold',
+              color: AppColor.white,
+            ),
+          ),
+        ),
+      ),
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,

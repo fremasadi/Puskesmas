@@ -1,6 +1,4 @@
 import 'package:get/get.dart';
-import 'package:puskesmas/app/modules/register/bindings/register_binding.dart';
-import 'package:puskesmas/app/modules/register/views/register_view.dart';
 
 import '../modules/base/bindings/base_binding.dart';
 import '../modules/base/views/base_view.dart';
@@ -9,9 +7,14 @@ import '../modules/history/views/history_view.dart';
 import '../modules/home/bindings/home_binding.dart';
 import '../modules/home/views/home_view.dart';
 import '../modules/login/bindings/login_binding.dart';
+import '../modules/login/views/checklogin_view.dart';
 import '../modules/login/views/login_view.dart';
 import '../modules/profile/bindings/profile_binding.dart';
 import '../modules/profile/views/profile_view.dart';
+import '../modules/queue/bindings/queue_binding.dart';
+import '../modules/queue/views/queue_view.dart';
+import '../modules/register/bindings/register_binding.dart';
+import '../modules/register/views/register_view.dart';
 import '../modules/splash/bindings/splash_binding.dart';
 import '../modules/splash/views/splash_view.dart';
 
@@ -20,7 +23,7 @@ part 'app_routes.dart';
 class AppPages {
   AppPages._();
 
-  static const INITIAL = Routes.SPLASH;
+  static const INITIAL = Routes.check;
 
   static final routes = [
     GetPage(
@@ -57,6 +60,20 @@ class AppPages {
       name: _Paths.REGISTER,
       page: () => const RegisterView(),
       binding: RegisterBinding(),
+    ),
+    GetPage(
+      name: _Paths.REGISTER,
+      page: () => const RegisterView(),
+      binding: RegisterBinding(),
+    ),
+    GetPage(
+      name: _Paths.check,
+      page: () => const CheckloginView(),
+    ),
+    GetPage(
+      name: _Paths.QUEUE,
+      page: () => const QueueView(),
+      binding: QueueBinding(),
     ),
   ];
 }
