@@ -11,17 +11,11 @@ class HomeView extends GetView<HomeController> {
 
   @override
   Widget build(BuildContext context) {
-    List<Map<String, dynamic>> poliList = [
-      {'name': 'Poli Gigi & Mulut', 'icon': Icons.medical_services},
-      {'name': 'Poli Umum', 'icon': Icons.local_hospital},
-      {'name': 'Poli Lansia', 'icon': Icons.child_care},
-      {'name': 'Poli Kb & Imunisas', 'icon': Icons.visibility},
-    ];
-
     return Scaffold(
       floatingActionButton: GestureDetector(
         onTap: () => Get.toNamed(Routes.QUEUE),
         child: Container(
+          margin: EdgeInsets.only(bottom: 16.sp),
           padding: EdgeInsets.symmetric(vertical: 12.sp, horizontal: 16.sp),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(12.r),
@@ -75,10 +69,15 @@ class HomeView extends GetView<HomeController> {
                     ],
                   ),
                   Spacer(),
-                  Icon(
-                    Icons.settings,
-                    size: 28.sp,
-                    color: AppColor.primary,
+                  GestureDetector(
+                    onTap: () {
+                      Get.toNamed(Routes.PROFILE);
+                    },
+                    child: Icon(
+                      Icons.settings,
+                      size: 28.sp,
+                      color: AppColor.primary,
+                    ),
                   )
                 ],
               ),
@@ -86,61 +85,158 @@ class HomeView extends GetView<HomeController> {
             Padding(
               padding: EdgeInsets.all(16.0.sp),
               child: Text(
-                'Silakan Pilih Poli',
+                'Riwayat Antrian',
                 style: TextStyle(
-                  fontSize: 16.sp,
+                  fontSize: 14.sp,
                   fontFamily: 'SemiBold',
                 ),
               ),
             ),
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 16.sp),
-              child: GridView.builder(
-                padding: EdgeInsets.zero,
+            Obx(() {
+              if (controller.isLoading.value) {
+                return const Center(child: CircularProgressIndicator());
+              }
+
+              if (controller.queueList.isEmpty) {
+                return Padding(
+                  padding: EdgeInsets.only(top: ScreenUtil().screenHeight * .3),
+                  child: Center(child: Text('Belum ada riwayat antrian.')),
+                );
+              }
+
+              return ListView.builder(
+                itemCount: controller.queueList.length,
                 shrinkWrap: true,
-                physics: NeverScrollableScrollPhysics(),
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2,
-                  crossAxisSpacing: 12.w,
-                  mainAxisSpacing: 12.h,
-                  childAspectRatio: 1,
-                ),
-                itemCount: poliList.length,
+                physics: const NeverScrollableScrollPhysics(),
+                padding: EdgeInsets.symmetric(horizontal: 16.sp),
                 itemBuilder: (context, index) {
-                  return Card(
-                    color: AppColor.white,
-                    elevation: 1,
-                    shape: RoundedRectangleBorder(
+                  final queue = controller.queueList[index];
+                  final doctor = queue['doctor'];
+                  return Container(
+                    margin: EdgeInsets.only(bottom: 12.sp),
+                    padding: EdgeInsets.all(12.sp),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
                       borderRadius: BorderRadius.circular(12.r),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black12,
+                          blurRadius: 4,
+                          offset: Offset(0, 2),
+                        )
+                      ],
                     ),
-                    child: InkWell(
-                      onTap: () {
-                        Get.toNamed(Routes.DOCTOR,
-                            arguments: poliList[index]['name']);
-                      },
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Icon(
-                            poliList[index]['icon'],
-                            size: 50.sp,
-                            color: AppColor.primary,
-                          ),
-                          SizedBox(height: 8.h),
-                          Text(
-                            poliList[index]['name'],
-                            style: TextStyle(
-                              fontSize: 14.sp,
-                              fontFamily: 'Medium',
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Dr. ${doctor?['nama_depan'] ?? '-'} ${doctor?['nama_belakang'] ?? ''}',
+                              style: TextStyle(
+                                fontSize: 14.sp,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            SizedBox(height: 4.sp),
+                            Text('Tanggal: ${queue['tgl_periksa']}'),
+                            Text(
+                                'Waktu: ${queue['start_time']} - ${queue['end_time']}'),
+                            Text('Status: ${queue['status']}'),
+                            if (queue['keterangan'] != null &&
+                                queue['keterangan'].toString().isNotEmpty)
+                              Text('Keterangan: ${queue['keterangan']}'),
+                          ],
+                        ),
+                        if (queue['status'] == 'selesai')
+                          GestureDetector(
+                            onTap: () async {
+                              await controller.fetchMedicalRecord(queue['id']);
+                              final data = controller.medicalRecord.value;
+                              if (data != null) {
+                                Get.dialog(AlertDialog(
+                                  backgroundColor: AppColor.white,
+                                  title: Text('Rekam Medis'),
+                                  content: Column(
+                                    mainAxisSize: MainAxisSize.min,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        'Tanggal: ${data['tgl_periksa']}',
+                                        style: TextStyle(
+                                          fontSize: 12.sp,
+                                          color: AppColor.black,
+                                        ),
+                                      ),
+                                      SizedBox(height: 8.h),
+                                      Text(
+                                        'Diagnosis: ${data['diagnosis']}',
+                                        style: TextStyle(
+                                          fontSize: 12.sp,
+                                          color: AppColor.black,
+                                        ),
+                                      ),
+                                      SizedBox(height: 8.h),
+                                      Text(
+                                        'Resep: ${data['resep']}',
+                                        style: TextStyle(
+                                          fontSize: 12.sp,
+                                          color: AppColor.black,
+                                        ),
+                                      ),
+                                      SizedBox(height: 8.h),
+                                      Text(
+                                          style: TextStyle(
+                                            fontSize: 12.sp,
+                                            color: AppColor.black,
+                                          ),
+                                          'Catatan Medis: ${data['catatan_medis']}'),
+                                    ],
+                                  ),
+                                  actions: [
+                                    TextButton(
+                                      onPressed: () => Get.back(),
+                                      child: Text(
+                                        'Tutup',
+                                        style: TextStyle(
+                                          fontSize: 12.sp,
+                                          color: AppColor.red,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ));
+                              }
+                            },
+                            child: Container(
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: 12.sp, vertical: 8.sp),
+                              decoration: BoxDecoration(
+                                color: Colors.redAccent,
+                                borderRadius: BorderRadius.circular(12.sp),
+                              ),
+                              child: Text(
+                                'Rekam Medis',
+                                style: TextStyle(
+                                  fontSize: 10.sp,
+                                  fontWeight: FontWeight.bold,
+                                  color: AppColor.white,
+                                ),
+                              ),
                             ),
                           ),
-                        ],
-                      ),
+                      ],
                     ),
                   );
                 },
-              ),
-            ),
+              );
+            }),
+            SizedBox(
+              height: 50.h,
+            )
           ],
         ),
       ),

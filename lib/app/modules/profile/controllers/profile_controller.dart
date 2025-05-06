@@ -1,23 +1,18 @@
 import 'package:get/get.dart';
 
+import '../../../core/repository/auth_repository.dart';
+import '../../../routes/app_pages.dart';
+
 class ProfileController extends GetxController {
-  //TODO: Implement ProfileController
+  final AuthRepository authRepository = AuthRepository();
 
-  final count = 0.obs;
-  @override
-  void onInit() {
-    super.onInit();
+  Future<void> logout() async {
+    try {
+      await authRepository.logout();
+      Get.offAllNamed(Routes.check);
+    } catch (e) {
+      print('error $e');
+      Get.snackbar('Error', 'Gagal logout: $e');
+    }
   }
-
-  @override
-  void onReady() {
-    super.onReady();
-  }
-
-  @override
-  void onClose() {
-    super.onClose();
-  }
-
-  void increment() => count.value++;
 }

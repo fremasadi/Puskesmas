@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:puskesmas/app/style/app_color.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class CheckloginView extends StatefulWidget {
@@ -31,6 +33,15 @@ class _CheckloginViewState extends State<CheckloginView> {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold();
+    return Scaffold(
+      backgroundColor: AppColor.primary,
+      body: Center(
+        child: Image.asset(
+          'assets/images/img_splash.png',
+          height: 200.h,
+          width: 300.w,
+        ),
+      ),
+    );
   }
 }

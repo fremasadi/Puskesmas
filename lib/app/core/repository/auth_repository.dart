@@ -60,4 +60,32 @@ class AuthRepository {
       throw Exception('Error during login: ${e.toString()}');
     }
   }
+
+  Future<void> logout() async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      final token = prefs.getString('token');
+
+      if (token == null) throw Exception('Token tidak ditemukan');
+
+      final url = Uri.parse('$baseUrl/auth/logout');
+      final response = await http.post(
+        url,
+        headers: {
+          'Authorization': 'Bearer $token',
+          'Accept': 'application/json',
+        },
+      );
+
+      if (response.statusCode == 200) {
+        await prefs.clear(); // 🧼 Bersihkan semua data setelah berhasil
+      } else {
+        throw Exception(
+          'Logout gagal. Status: ${response.statusCode}',
+        );
+      }
+    } catch (e) {
+      rethrow;
+    }
+  }
 }
