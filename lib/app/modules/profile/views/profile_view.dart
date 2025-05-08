@@ -53,7 +53,7 @@ class ProfileView extends GetView<ProfileController> {
                   ),
                   SizedBox(height: 12.h),
                   Text(
-                    'Fremas Adi',
+                    'Muti',
                     style:
                         TextStyle(fontSize: 16.sp, fontWeight: FontWeight.bold),
                   ),
@@ -67,14 +67,14 @@ class ProfileView extends GetView<ProfileController> {
             SizedBox(height: 12.h),
 
             // Data langsung ditulis di UI
-            infoItem('Email', 'farrel@example.com'),
-            infoItem('No. HP', '082221987654'),
-            infoItem('Tanggal Lahir', '2000-01-01'),
-            infoItem('Jenis Kelamin', 'Laki-laki'),
-            infoItem('Alamat', 'Jl. Merpati No. 123'),
-            infoItem('Kota & Provinsi', 'Semarang, Jawa Tengah'),
-            infoItem('Negara', 'Indonesia'),
-            infoItem('Kode Pos', '50123'),
+            infoItem('Email', controller.email.value),
+            infoItem('No. HP', controller.noHp.value),
+            infoItem('Tanggal Lahir', controller.tglLahir.value),
+            infoItem('Jenis Kelamin', controller.jenisKelamin.value),
+            infoItem('Alamat', controller.alamat.value),
+            infoItem('Kota & Provinsi', controller.kotaProvinsi.value),
+            infoItem('Negara', controller.negara.value),
+            infoItem('Kode Pos', controller.kodepos.value),
 
             SizedBox(height: 12.h),
 

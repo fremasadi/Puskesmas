@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:intl/intl.dart';
+import 'package:puskesmas/app/modules/home/controllers/home_controller.dart';
 import '../../../core/repository/queue_repository.dart';
 
 class QueueController extends GetxController {
@@ -11,6 +11,7 @@ class QueueController extends GetxController {
   final endTimeController = TextEditingController();
   final keteranganController = TextEditingController();
   final isLoading = false.obs;
+  final homeController = Get.find<HomeController>();
 
   // Reactive properties for text values
   final tglPeriksaText = RxString(''); // Make this observable
@@ -158,11 +159,12 @@ class QueueController extends GetxController {
 
       // Reset form setelah berhasil
       _resetForm();
+      homeController.fetchQueueHistory();
     } catch (e) {
       print(e);
       Get.snackbar(
-        'Error',
-        'Gagal mengirim data pendaftaran. Silahkan coba lagi.',
+        'Gagal',
+        'Mohon Selesaikan Form anda.',
         backgroundColor: Colors.red[100],
         colorText: Colors.black87,
       );

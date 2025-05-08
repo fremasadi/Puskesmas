@@ -468,7 +468,7 @@ class QueueView extends GetView<QueueController> {
                                                 CrossAxisAlignment.start,
                                             children: [
                                               const Text(
-                                                'Keluhan (Opsional)',
+                                                'Keluhan',
                                                 style: TextStyle(
                                                   fontSize: 16,
                                                   fontWeight: FontWeight.bold,

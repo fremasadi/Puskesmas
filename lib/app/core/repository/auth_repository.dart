@@ -45,9 +45,31 @@ class AuthRepository {
       final responseData = jsonDecode(response.body);
 
       if (response.statusCode == 200) {
-        // Simpan token ke SharedPreferences
         final prefs = await SharedPreferences.getInstance();
+
+        // Simpan token
         await prefs.setString('token', responseData['token']);
+
+        // Simpan data user
+        final user = responseData['user'];
+        await prefs.setInt('user_id', user['id']);
+        await prefs.setString('nama_depan', user['nama_depan']);
+        await prefs.setString('nama_belakang', user['nama_belakang']);
+        await prefs.setString('email', user['email']);
+        await prefs.setString('role', user['role']);
+        await prefs.setString('no_hp', user['no_hp']);
+        await prefs.setString('tgl_lahir', user['tgl_lahir']);
+        await prefs.setString('jenis_kelamin', user['jenis_kelamin']);
+        await prefs.setString('alamat', user['alamat']);
+        await prefs.setString('negara', user['negara']);
+        await prefs.setString('provinsi', user['provinsi']);
+        await prefs.setString('kota', user['kota']);
+        await prefs.setString('kodepos', user['kodepos']);
+
+        // Optional: foto bisa null
+        if (user['foto'] != null) {
+          await prefs.setString('foto', user['foto']);
+        }
 
         return {
           'message': responseData['message'],
