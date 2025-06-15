@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:puskesmas/app/core/utils/price_converter.dart';
 import 'package:puskesmas/app/routes/app_pages.dart';
 import 'package:puskesmas/app/style/app_color.dart';
 import '../controllers/home_controller.dart';
+import 'medical_record_detail.dart';
 
 class HomeView extends GetView<HomeController> {
   const HomeView({super.key});
@@ -42,12 +44,15 @@ class HomeView extends GetView<HomeController> {
               ),
               child: Row(
                 children: [
-                  CircleAvatar(
-                    radius: 25.r,
-                    backgroundImage: AssetImage(
-                      'assets/images/img_profile.jpg',
-                    ),
-                  ),
+                  Obx(() => CircleAvatar(
+                        radius: 25.r,
+                        backgroundImage:
+                            controller.profileController.foto.value.isNotEmpty
+                                ? NetworkImage(
+                                        controller.profileController.foto.value)
+                                    as ImageProvider
+                                : AssetImage('assets/images/img_profile.jpg'),
+                      )),
                   SizedBox(width: 12.w),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -59,12 +64,14 @@ class HomeView extends GetView<HomeController> {
                           fontFamily: 'Medium',
                         ),
                       ),
-                      Text(
-                        'Hi, Muti Santoso',
-                        style: TextStyle(
-                          fontSize: 12.sp,
+                      Obx(
+                        () => Text(
+                          'Hi,${controller.profileController.nama_depan.value} ${controller.profileController.nama_belakang.value}',
+                          style: TextStyle(
+                            fontSize: 12.sp,
+                          ),
                         ),
-                      )
+                      ),
                     ],
                   ),
                   Spacer(),
@@ -83,13 +90,27 @@ class HomeView extends GetView<HomeController> {
             ),
             Padding(
               padding: EdgeInsets.all(16.0.sp),
-              child: Text(
-                'Riwayat Antrian',
-                style: TextStyle(
-                  fontSize: 14.sp,
-                  fontFamily: 'SemiBold',
-                ),
-              ),
+              child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      'Riwayat Antrian',
+                      style: TextStyle(
+                        fontSize: 14.sp,
+                        fontFamily: 'SemiBold',
+                      ),
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        controller.fetchQueueHistory();
+                      },
+                      child: Icon(
+                        Icons.refresh,
+                        size: 28.sp,
+                        color: AppColor.primary,
+                      ),
+                    ),
+                  ]),
             ),
             Obx(() {
               if (controller.isLoading.value) {
@@ -131,11 +152,16 @@ class HomeView extends GetView<HomeController> {
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text(
-                              'Dr. ${doctor?['nama_depan'] ?? '-'} ${doctor?['nama_belakang'] ?? ''}',
-                              style: TextStyle(
-                                fontSize: 14.sp,
-                                fontWeight: FontWeight.bold,
+                            SizedBox(
+                              width: 200.w, // atau lebar yang diinginkan
+                              child: Text(
+                                'Dr. ${doctor?['nama_depan'] ?? '-'} ${doctor?['nama_belakang'] ?? ''}',
+                                style: TextStyle(
+                                  fontSize: 14.sp,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                                overflow: TextOverflow.ellipsis,
+                                maxLines: 1,
                               ),
                             ),
                             SizedBox(height: 4.sp),
@@ -145,7 +171,32 @@ class HomeView extends GetView<HomeController> {
                             Text('Status: ${queue['status']}'),
                             if (queue['keterangan'] != null &&
                                 queue['keterangan'].toString().isNotEmpty)
-                              Text('Keterangan: ${queue['keterangan']}'),
+                              GestureDetector(
+                                onTap: () {
+                                  showDialog(
+                                    context: context,
+                                    builder: (context) => AlertDialog(
+                                      backgroundColor: AppColor.white,
+                                      title: Text('Keterangan'),
+                                      content: Text(queue['keterangan']),
+                                      actions: [
+                                        TextButton(
+                                          onPressed: () =>
+                                              Navigator.of(context).pop(),
+                                          child: Text('Tutup'),
+                                        ),
+                                      ],
+                                    ),
+                                  );
+                                },
+                                child: Text(
+                                  'keterangan periksa',
+                                  style: TextStyle(
+                                    color: Colors.blue,
+                                    decoration: TextDecoration.underline,
+                                  ),
+                                ),
+                              ),
                           ],
                         ),
                         if (queue['status'] == 'selesai')
@@ -154,60 +205,10 @@ class HomeView extends GetView<HomeController> {
                               await controller.fetchMedicalRecord(queue['id']);
                               final data = controller.medicalRecord.value;
                               if (data != null) {
-                                Get.dialog(AlertDialog(
-                                  backgroundColor: AppColor.white,
-                                  title: Text('Rekam Medis'),
-                                  content: Column(
-                                    mainAxisSize: MainAxisSize.min,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        'Tanggal: ${data['tgl_periksa']}',
-                                        style: TextStyle(
-                                          fontSize: 12.sp,
-                                          color: AppColor.black,
-                                        ),
-                                      ),
-                                      SizedBox(height: 8.h),
-                                      Text(
-                                        'Diagnosis: ${data['diagnosis']}',
-                                        style: TextStyle(
-                                          fontSize: 12.sp,
-                                          color: AppColor.black,
-                                        ),
-                                      ),
-                                      SizedBox(height: 8.h),
-                                      Text(
-                                        'Resep: ${data['resep']}',
-                                        style: TextStyle(
-                                          fontSize: 12.sp,
-                                          color: AppColor.black,
-                                        ),
-                                      ),
-                                      SizedBox(height: 8.h),
-                                      Text(
-                                          style: TextStyle(
-                                            fontSize: 12.sp,
-                                            color: AppColor.black,
-                                          ),
-                                          'Catatan Medis: ${data['catatan_medis']}'),
-                                    ],
-                                  ),
-                                  actions: [
-                                    TextButton(
-                                      onPressed: () => Get.back(),
-                                      child: Text(
-                                        'Tutup',
-                                        style: TextStyle(
-                                          fontSize: 12.sp,
-                                          color: AppColor.red,
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ));
+                                // Navigate to new page instead of showing dialog
+                                print(data);
+                                Get.to(
+                                    () => MedicalRecordDetailPage(data: data));
                               }
                             },
                             child: Container(

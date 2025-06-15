@@ -1,9 +1,12 @@
 import 'package:get/get.dart';
+import 'package:puskesmas/app/modules/profile/controllers/profile_controller.dart';
+
 import '../../../core/repository/queue_repository.dart';
 
 class HomeController extends GetxController {
   final queueList = <Map<String, dynamic>>[].obs;
   final isLoading = false.obs;
+  final profileController = Get.find<ProfileController>();
 
   final QueueRepository queueRepository = QueueRepository();
 
@@ -11,9 +14,10 @@ class HomeController extends GetxController {
   void onInit() {
     super.onInit();
     fetchQueueHistory();
+    profileController.loadUserData();
   }
 
-  void fetchQueueHistory() async {
+  Future<void> fetchQueueHistory() async {
     isLoading(true);
     try {
       final result = await queueRepository.getQueueData();

@@ -152,7 +152,7 @@ class QueueView extends GetView<QueueController> {
                                         value: ctrl.selectedPoliId.value,
                                         items: ctrl.polis.map((poli) {
                                           return DropdownMenuItem<int>(
-                                            value: poli['id'],
+                                            value: int.parse(poli['id']),
                                             child: Text(poli['name']),
                                           );
                                         }).toList(),
@@ -229,8 +229,11 @@ class QueueView extends GetView<QueueController> {
                                                     ),
                                                     child: InkWell(
                                                       onTap: () {
+                                                        final id = doctor['id'];
                                                         ctrl.onDoctorChanged(
-                                                            doctor['id']);
+                                                            id is String
+                                                                ? int.parse(id)
+                                                                : id);
                                                       },
                                                       borderRadius:
                                                           BorderRadius.circular(
@@ -439,97 +442,76 @@ class QueueView extends GetView<QueueController> {
                       GetBuilder<QueueController>(
                           init: controller,
                           builder: (ctrl) {
-                            // Cek kondisinya di sini
-                            final shouldShow = ctrl.selectedDoctorId.value !=
-                                    null &&
-                                ctrl.doctors.any((d) =>
-                                    d['id'] == ctrl.selectedDoctorId.value) &&
-                                ctrl.startTimeController.text.isNotEmpty &&
-                                ctrl.jadwalSlots.any((slot) =>
-                                    slot['start'] ==
-                                        ctrl.startTimeController.text &&
-                                    slot['end'] == ctrl.endTimeController.text);
-
                             return Column(
                               children: [
                                 // Keterangan
-                                shouldShow
-                                    ? Card(
-                                        color: Colors.white,
-                                        margin: EdgeInsets.only(bottom: 16.sp),
-                                        shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(12.r),
-                                        ),
-                                        child: Padding(
-                                          padding: const EdgeInsets.all(16),
-                                          child: Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              const Text(
-                                                'Keluhan',
-                                                style: TextStyle(
-                                                  fontSize: 16,
-                                                  fontWeight: FontWeight.bold,
-                                                ),
-                                              ),
-                                              const SizedBox(height: 12),
-                                              TextFormField(
-                                                controller:
-                                                    ctrl.keteranganController,
-                                                decoration: InputDecoration(
-                                                  filled: true,
-                                                  fillColor: Colors.grey[100],
-                                                  border: OutlineInputBorder(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            8),
-                                                    borderSide: BorderSide.none,
-                                                  ),
-                                                  contentPadding:
-                                                      const EdgeInsets.all(16),
-                                                  hintText:
-                                                      'Berikan keluhan tambahan jika ada...',
-                                                ),
-                                                minLines: 3,
-                                                maxLines: 5,
-                                              ),
-                                            ],
+                                Card(
+                                  color: Colors.white,
+                                  margin: EdgeInsets.only(bottom: 16.sp),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(12.r),
+                                  ),
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(16),
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        const Text(
+                                          'Keluhan',
+                                          style: TextStyle(
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.bold,
                                           ),
                                         ),
-                                      )
-                                    : const SizedBox.shrink(),
-
-                                // Submit button
-                                shouldShow
-                                    ? SizedBox(
-                                        width: double.infinity,
-                                        child: ElevatedButton(
-                                          onPressed: () {
-                                            ctrl.submitForm();
-                                          },
-                                          style: ElevatedButton.styleFrom(
-                                            backgroundColor: AppColor.primary,
-                                            padding: const EdgeInsets.symmetric(
-                                                vertical: 16),
-                                            shape: RoundedRectangleBorder(
+                                        const SizedBox(height: 12),
+                                        TextFormField(
+                                          controller: ctrl.keteranganController,
+                                          decoration: InputDecoration(
+                                            filled: true,
+                                            fillColor: Colors.grey[100],
+                                            border: OutlineInputBorder(
                                               borderRadius:
-                                                  BorderRadius.circular(12),
+                                                  BorderRadius.circular(8),
+                                              borderSide: BorderSide.none,
                                             ),
-                                            elevation: 2,
+                                            contentPadding:
+                                                const EdgeInsets.all(16),
+                                            hintText:
+                                                'Berikan keluhan tambahan jika ada...',
                                           ),
-                                          child: Text(
-                                            'Kirim Pendaftaran',
-                                            style: TextStyle(
-                                              fontSize: 14.sp,
-                                              fontWeight: FontWeight.bold,
-                                              color: Colors.white,
-                                            ),
-                                          ),
+                                          minLines: 3,
+                                          maxLines: 5,
                                         ),
-                                      )
-                                    : const SizedBox.shrink(),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                                SizedBox(
+                                  width: double.infinity,
+                                  child: ElevatedButton(
+                                    onPressed: () {
+                                      ctrl.submitForm();
+                                    },
+                                    style: ElevatedButton.styleFrom(
+                                      backgroundColor: AppColor.primary,
+                                      padding: const EdgeInsets.symmetric(
+                                          vertical: 16),
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(12),
+                                      ),
+                                      elevation: 2,
+                                    ),
+                                    child: Text(
+                                      'Kirim Pendaftaran',
+                                      style: TextStyle(
+                                        fontSize: 14.sp,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                  ),
+                                )
                               ],
                             );
                           })

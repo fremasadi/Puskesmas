@@ -65,11 +65,14 @@ class AuthRepository {
         await prefs.setString('provinsi', user['provinsi']);
         await prefs.setString('kota', user['kota']);
         await prefs.setString('kodepos', user['kodepos']);
+        await prefs.setString('no_nik', user['no_nik']);
+        await prefs.setString('no_bpjs', user['no_bpjs']);
 
         // Optional: foto bisa null
         if (user['foto'] != null) {
           await prefs.setString('foto', user['foto']);
         }
+        print(responseData['token']);
 
         return {
           'message': responseData['message'],

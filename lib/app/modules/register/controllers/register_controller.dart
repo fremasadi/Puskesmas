@@ -43,6 +43,9 @@ class RegisterController extends GetxController {
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
   final noHpController = TextEditingController();
+  final noNikController = TextEditingController();
+  final noBpjsController = TextEditingController();
+
   final tglLahirController = TextEditingController();
   final jenisKelaminController = TextEditingController();
   final alamatController = TextEditingController();
@@ -73,6 +76,8 @@ class RegisterController extends GetxController {
         "provinsi": provinsiController.text,
         "kota": kotaController.text,
         "kodepos": kodeposController.text,
+        "no_nik": noNikController.text,
+        "no_bpjs": noBpjsController.text,
       };
 
       final response = await authRepo.register(data);
@@ -111,6 +116,8 @@ class RegisterController extends GetxController {
     provinsiController.clear();
     kotaController.clear();
     kodeposController.clear();
+    noNikController.clear();
+    noBpjsController.clear();
 
     // Reset dropdowns
     selectedProvinsi.value = '';
@@ -135,6 +142,8 @@ class RegisterController extends GetxController {
     provinsiController.dispose();
     kotaController.dispose();
     kodeposController.dispose();
+    noBpjsController.dispose();
+    noNikController.dispose();
     super.onClose();
   }
 }

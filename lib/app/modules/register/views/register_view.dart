@@ -106,6 +106,40 @@ class RegisterView extends GetView<RegisterController> {
                   },
                 ),
               ),
+              Padding(
+                padding: const EdgeInsets.only(bottom: 16.0),
+                child: InputTextFormField(
+                  controller: controller.noBpjsController,
+                  hint: 'Nomor Bpjs',
+                  keyboardType: TextInputType.phone,
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Nomor Bpjs wajib diisi';
+                    }
+                    if (!value.isPhoneNumber) {
+                      return 'Nomor Bpjs tidak valid';
+                    }
+                    return null;
+                  },
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(bottom: 16.0),
+                child: InputTextFormField(
+                  controller: controller.noNikController,
+                  hint: 'Nomor Nik',
+                  keyboardType: TextInputType.phone,
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Nomor Nik wajib diisi';
+                    }
+                    if (!value.isPhoneNumber) {
+                      return 'Nomor Nik tidak valid';
+                    }
+                    return null;
+                  },
+                ),
+              ),
               // Nomor HP
               Padding(
                 padding: const EdgeInsets.only(bottom: 16.0),

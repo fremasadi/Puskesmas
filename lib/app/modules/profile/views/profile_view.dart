@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:puskesmas/app/modules/profile/views/edit_profile_view.dart';
 import '../../../style/app_color.dart';
 import '../controllers/profile_controller.dart';
 
@@ -52,29 +53,32 @@ class ProfileView extends GetView<ProfileController> {
                         size: 40.sp, color: AppColor.primary),
                   ),
                   SizedBox(height: 12.h),
-                  Text(
-                    'Muti',
-                    style:
-                        TextStyle(fontSize: 16.sp, fontWeight: FontWeight.bold),
-                  ),
-                  Text(
-                    'PS-001',
-                    style: TextStyle(fontSize: 12.sp, color: Colors.grey),
-                  ),
+                  Obx(() => Text(
+                      '${controller.nama_depan.value} ${controller.nama_belakang.value}')),
                 ],
               ),
             ),
             SizedBox(height: 12.h),
 
             // Data langsung ditulis di UI
-            infoItem('Email', controller.email.value),
-            infoItem('No. HP', controller.noHp.value),
-            infoItem('Tanggal Lahir', controller.tglLahir.value),
-            infoItem('Jenis Kelamin', controller.jenisKelamin.value),
-            infoItem('Alamat', controller.alamat.value),
-            infoItem('Kota & Provinsi', controller.kotaProvinsi.value),
-            infoItem('Negara', controller.negara.value),
-            infoItem('Kode Pos', controller.kodepos.value),
+            Obx(() => infoItem('No Bpjs', controller.noBpjs.value)),
+            Obx(() => infoItem('No Nik', controller.noNik.value)),
+            Obx(() => infoItem('Email', controller.email.value)),
+            Obx(() => infoItem('No. HP', controller.noHp.value)),
+            Obx(() => infoItem('Tanggal Lahir', controller.tglLahir.value)),
+            Obx(() => infoItem(
+                  'Jenis Kelamin',
+                  controller.jenisKelamin.value == 'L'
+                      ? 'Laki-laki'
+                      : controller.jenisKelamin.value == 'P'
+                          ? 'Perempuan'
+                          : controller.jenisKelamin.value,
+                )),
+            Obx(() => infoItem('Alamat', controller.alamat.value)),
+            Obx(() =>
+                infoItem('Kota & Provinsi', controller.kotaProvinsi.value)),
+            Obx(() => infoItem('Negara', controller.negara.value)),
+            Obx(() => infoItem('Kode Pos', controller.kodepos.value)),
 
             SizedBox(height: 12.h),
 
@@ -85,7 +89,9 @@ class ProfileView extends GetView<ProfileController> {
                 children: [
                   Expanded(
                     child: ElevatedButton.icon(
-                      onPressed: () {},
+                      onPressed: () {
+                        Get.to(EditProfileView());
+                      },
                       icon: Icon(Icons.edit, color: Colors.white),
                       label:
                           Text('Edit', style: TextStyle(color: Colors.white)),
