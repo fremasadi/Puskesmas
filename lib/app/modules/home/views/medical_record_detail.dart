@@ -299,6 +299,25 @@ class MedicalRecordDetailPage extends StatelessWidget {
   }
 
   Widget _buildLabResultsCard() {
+    final labData = [
+      data['medical_record']['gula_darah_acak'],
+      data['medical_record']['gula_darah_puasa'],
+      data['medical_record']['gula_darah_2jm_pp'],
+      data['medical_record']['analisa_lemak'],
+      data['medical_record']['cholesterol'],
+      data['medical_record']['trigliserida'],
+      data['medical_record']['hdl'],
+      data['medical_record']['ldl'],
+      data['medical_record']['asam_urat'],
+      data['medical_record']['bun'],
+      data['medical_record']['creatinin'],
+      data['medical_record']['sgot'],
+      data['medical_record']['sgpt'],
+    ];
+
+    final isAllEmpty = labData
+        .every((value) => value == null || value.toString().trim().isEmpty);
+
     return Card(
       color: AppColor.white,
       elevation: 3,
@@ -323,45 +342,65 @@ class MedicalRecordDetailPage extends StatelessWidget {
               ],
             ),
             SizedBox(height: 12.h),
-            _buildLabGrid([
-              {
-                'label': 'Gula Darah Acak',
-                'value': data['medical_record']['gula_darah_acak']
-              },
-              {
-                'label': 'Gula Darah Puasa',
-                'value': data['medical_record']['gula_darah_puasa']
-              },
-              {
-                'label': 'Gula Darah 2J PP',
-                'value': data['medical_record']['gula_darah_2jm_pp']
-              },
-              {
-                'label': 'Analisa Lemak',
-                'value': data['medical_record']['analisa_lemak']
-              },
-              {
-                'label': 'Cholesterol',
-                'value': data['medical_record']['cholesterol']
-              },
-              {
-                'label': 'Trigliserida',
-                'value': data['medical_record']['trigliserida']
-              },
-              {'label': 'HDL', 'value': data['medical_record']['hdl']},
-              {'label': 'LDL', 'value': data['medical_record']['ldl']},
-              {
-                'label': 'Asam Urat',
-                'value': data['medical_record']['asam_urat']
-              },
-              {'label': 'BUN', 'value': data['medical_record']['bun']},
-              {
-                'label': 'Creatinin',
-                'value': data['medical_record']['creatinin']
-              },
-              {'label': 'SGOT', 'value': data['medical_record']['sgot']},
-              {'label': 'SGPT', 'value': data['medical_record']['sgpt']},
-            ]),
+            if (isAllEmpty)
+              Container(
+                width: double.infinity,
+                padding: EdgeInsets.all(16.w),
+                decoration: BoxDecoration(
+                  color: Colors.grey[50],
+                  borderRadius: BorderRadius.circular(8.r),
+                  border: Border.all(color: Colors.grey[200]!),
+                ),
+                child: Text(
+                  'Tidak ada data Pemeriksaan Darah',
+                  style: TextStyle(
+                    fontSize: 12.sp,
+                    color: Colors.grey[600],
+                    fontStyle: FontStyle.italic,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+              ),
+            if (!isAllEmpty)
+              _buildLabGrid([
+                {
+                  'label': 'Gula Darah Acak',
+                  'value': data['medical_record']['gula_darah_acak']
+                },
+                {
+                  'label': 'Gula Darah Puasa',
+                  'value': data['medical_record']['gula_darah_puasa']
+                },
+                {
+                  'label': 'Gula Darah 2J PP',
+                  'value': data['medical_record']['gula_darah_2jm_pp']
+                },
+                {
+                  'label': 'Analisa Lemak',
+                  'value': data['medical_record']['analisa_lemak']
+                },
+                {
+                  'label': 'Cholesterol',
+                  'value': data['medical_record']['cholesterol']
+                },
+                {
+                  'label': 'Trigliserida',
+                  'value': data['medical_record']['trigliserida']
+                },
+                {'label': 'HDL', 'value': data['medical_record']['hdl']},
+                {'label': 'LDL', 'value': data['medical_record']['ldl']},
+                {
+                  'label': 'Asam Urat',
+                  'value': data['medical_record']['asam_urat']
+                },
+                {'label': 'BUN', 'value': data['medical_record']['bun']},
+                {
+                  'label': 'Creatinin',
+                  'value': data['medical_record']['creatinin']
+                },
+                {'label': 'SGOT', 'value': data['medical_record']['sgot']},
+                {'label': 'SGPT', 'value': data['medical_record']['sgpt']},
+              ]),
           ],
         ),
       ),
@@ -369,6 +408,21 @@ class MedicalRecordDetailPage extends StatelessWidget {
   }
 
   Widget _buildUrinalysisCard() {
+    final urinalysisItems = [
+      data['medical_record']['warna'],
+      data['medical_record']['ph'],
+      data['medical_record']['berat_jenis'],
+      data['medical_record']['reduksi'],
+      data['medical_record']['protein'],
+      data['medical_record']['bilirubin'],
+      data['medical_record']['urobilinogen'],
+      data['medical_record']['nitrit'],
+      data['medical_record']['keton'],
+    ];
+
+    final isAllEmpty = urinalysisItems
+        .every((value) => value == null || value.toString().trim().isEmpty);
+
     return Card(
       elevation: 3,
       color: AppColor.white,
@@ -393,26 +447,52 @@ class MedicalRecordDetailPage extends StatelessWidget {
               ],
             ),
             SizedBox(height: 12.h),
-            _buildLabGrid([
-              {'label': 'Warna', 'value': data['medical_record']['warna']},
-              {'label': 'pH', 'value': data['medical_record']['ph']},
-              {
-                'label': 'Berat Jenis',
-                'value': data['medical_record']['berat_jenis']
-              },
-              {'label': 'Reduksi', 'value': data['medical_record']['reduksi']},
-              {'label': 'Protein', 'value': data['medical_record']['protein']},
-              {
-                'label': 'Bilirubin',
-                'value': data['medical_record']['bilirubin']
-              },
-              {
-                'label': 'Urobilinogen',
-                'value': data['medical_record']['urobilinogen']
-              },
-              {'label': 'Nitrit', 'value': data['medical_record']['nitrit']},
-              {'label': 'Keton', 'value': data['medical_record']['keton']},
-            ]),
+            if (isAllEmpty)
+              Container(
+                width: double.infinity,
+                padding: EdgeInsets.all(16.w),
+                decoration: BoxDecoration(
+                  color: Colors.grey[50],
+                  borderRadius: BorderRadius.circular(8.r),
+                  border: Border.all(color: Colors.grey[200]!),
+                ),
+                child: Text(
+                  'Tidak ada data Pemeriksaan Urinalisa',
+                  style: TextStyle(
+                    fontSize: 12.sp,
+                    color: Colors.grey[600],
+                    fontStyle: FontStyle.italic,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+              ),
+            if (!isAllEmpty)
+              _buildLabGrid([
+                {'label': 'Warna', 'value': data['medical_record']['warna']},
+                {'label': 'pH', 'value': data['medical_record']['ph']},
+                {
+                  'label': 'Berat Jenis',
+                  'value': data['medical_record']['berat_jenis']
+                },
+                {
+                  'label': 'Reduksi',
+                  'value': data['medical_record']['reduksi']
+                },
+                {
+                  'label': 'Protein',
+                  'value': data['medical_record']['protein']
+                },
+                {
+                  'label': 'Bilirubin',
+                  'value': data['medical_record']['bilirubin']
+                },
+                {
+                  'label': 'Urobilinogen',
+                  'value': data['medical_record']['urobilinogen']
+                },
+                {'label': 'Nitrit', 'value': data['medical_record']['nitrit']},
+                {'label': 'Keton', 'value': data['medical_record']['keton']},
+              ]),
           ],
         ),
       ),
@@ -420,6 +500,20 @@ class MedicalRecordDetailPage extends StatelessWidget {
   }
 
   Widget _buildBloodTestCard() {
+    final bloodTestItems = [
+      data['medical_record']['hemoglobin'],
+      data['medical_record']['leukosit'],
+      data['medical_record']['erytrosit'],
+      data['medical_record']['trombosit'],
+      data['medical_record']['pcv'],
+      data['medical_record']['dif'],
+      data['medical_record']['bleeding_time'],
+      data['medical_record']['clotting_time'],
+    ];
+
+    final isAllEmpty = bloodTestItems
+        .every((value) => value == null || value.toString().trim().isEmpty);
+
     return Card(
       elevation: 3,
       color: AppColor.white,
@@ -444,34 +538,54 @@ class MedicalRecordDetailPage extends StatelessWidget {
               ],
             ),
             SizedBox(height: 12.h),
-            _buildLabGrid([
-              {
-                'label': 'Hemoglobin',
-                'value': data['medical_record']['hemoglobin']
-              },
-              {
-                'label': 'Leukosit',
-                'value': data['medical_record']['leukosit']
-              },
-              {
-                'label': 'Erytrosit',
-                'value': data['medical_record']['erytrosit']
-              },
-              {
-                'label': 'Trombosit',
-                'value': data['medical_record']['trombosit']
-              },
-              {'label': 'PCV', 'value': data['medical_record']['pcv']},
-              {'label': 'DIF', 'value': data['medical_record']['dif']},
-              {
-                'label': 'Bleeding Time',
-                'value': data['medical_record']['bleeding_time']
-              },
-              {
-                'label': 'Clotting Time',
-                'value': data['medical_record']['clotting_time']
-              },
-            ]),
+            if (isAllEmpty)
+              Container(
+                width: double.infinity,
+                padding: EdgeInsets.all(16.w),
+                decoration: BoxDecoration(
+                  color: Colors.grey[50],
+                  borderRadius: BorderRadius.circular(8.r),
+                  border: Border.all(color: Colors.grey[200]!),
+                ),
+                child: Text(
+                  'Tidak ada data Pemeriksaan Darah Lengkap',
+                  style: TextStyle(
+                    fontSize: 12.sp,
+                    color: Colors.grey[600],
+                    fontStyle: FontStyle.italic,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+              ),
+            if (!isAllEmpty)
+              _buildLabGrid([
+                {
+                  'label': 'Hemoglobin',
+                  'value': data['medical_record']['hemoglobin']
+                },
+                {
+                  'label': 'Leukosit',
+                  'value': data['medical_record']['leukosit']
+                },
+                {
+                  'label': 'Erytrosit',
+                  'value': data['medical_record']['erytrosit']
+                },
+                {
+                  'label': 'Trombosit',
+                  'value': data['medical_record']['trombosit']
+                },
+                {'label': 'PCV', 'value': data['medical_record']['pcv']},
+                {'label': 'DIF', 'value': data['medical_record']['dif']},
+                {
+                  'label': 'Bleeding Time',
+                  'value': data['medical_record']['bleeding_time']
+                },
+                {
+                  'label': 'Clotting Time',
+                  'value': data['medical_record']['clotting_time']
+                },
+              ]),
           ],
         ),
       ),
@@ -479,6 +593,19 @@ class MedicalRecordDetailPage extends StatelessWidget {
   }
 
   Widget _buildSerologyCard() {
+    final serologyItems = [
+      data['medical_record']['salmonella_o'],
+      data['medical_record']['salmonella_h'],
+      data['medical_record']['salmonella_p_a'],
+      data['medical_record']['salmonella_p_b'],
+      data['medical_record']['hbsag'],
+      data['medical_record']['vdrl'],
+      data['medical_record']['plano_test'],
+    ];
+
+    final isAllEmpty = serologyItems
+        .every((value) => value == null || value.toString().trim().isEmpty);
+
     return Card(
       color: AppColor.white,
       elevation: 3,
@@ -503,30 +630,50 @@ class MedicalRecordDetailPage extends StatelessWidget {
               ],
             ),
             SizedBox(height: 12.h),
-            _buildLabGrid([
-              {
-                'label': 'Salmonella O',
-                'value': data['medical_record']['salmonella_o']
-              },
-              {
-                'label': 'Salmonella H',
-                'value': data['medical_record']['salmonella_h']
-              },
-              {
-                'label': 'Salmonella P.A',
-                'value': data['medical_record']['salmonella_p_a']
-              },
-              {
-                'label': 'Salmonella P.B',
-                'value': data['medical_record']['salmonella_p_b']
-              },
-              {'label': 'HbsAg', 'value': data['medical_record']['hbsag']},
-              {'label': 'VDRL', 'value': data['medical_record']['vdrl']},
-              {
-                'label': 'Plano Test',
-                'value': data['medical_record']['plano_test']
-              },
-            ]),
+            if (isAllEmpty)
+              Container(
+                width: double.infinity,
+                padding: EdgeInsets.all(16.w),
+                decoration: BoxDecoration(
+                  color: Colors.grey[50],
+                  borderRadius: BorderRadius.circular(8.r),
+                  border: Border.all(color: Colors.grey[200]!),
+                ),
+                child: Text(
+                  'Tidak ada data Pemeriksaan Serologi',
+                  style: TextStyle(
+                    fontSize: 12.sp,
+                    color: Colors.grey[600],
+                    fontStyle: FontStyle.italic,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+              ),
+            if (!isAllEmpty)
+              _buildLabGrid([
+                {
+                  'label': 'Salmonella O',
+                  'value': data['medical_record']['salmonella_o']
+                },
+                {
+                  'label': 'Salmonella H',
+                  'value': data['medical_record']['salmonella_h']
+                },
+                {
+                  'label': 'Salmonella P.A',
+                  'value': data['medical_record']['salmonella_p_a']
+                },
+                {
+                  'label': 'Salmonella P.B',
+                  'value': data['medical_record']['salmonella_p_b']
+                },
+                {'label': 'HbsAg', 'value': data['medical_record']['hbsag']},
+                {'label': 'VDRL', 'value': data['medical_record']['vdrl']},
+                {
+                  'label': 'Plano Test',
+                  'value': data['medical_record']['plano_test']
+                },
+              ]),
           ],
         ),
       ),
@@ -625,5 +772,10 @@ class MedicalRecordDetailPage extends StatelessWidget {
     if (value == null) return null;
     // Implement your currency formatting here
     return 'Rp ${value.toString().replaceAllMapped(RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]},')}';
+  }
+
+  bool isAllValuesNull(List<Map<String, dynamic>> items) {
+    return items.every(
+        (item) => item['value'] == null || item['value'].toString().isEmpty);
   }
 }
